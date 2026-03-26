@@ -11,11 +11,19 @@ class Node {
 }
 
 class Tree {
-  constructor() {
+  constructor(array = []) {
+    // default is []
+    if (array instanceof Array) this.array = array; // strings or numbers are not allowed
     this.root;
   }
 
-  buildTree(array) {
+  buildTree(array = this.array) {
+    // use the constructor array if no array is given
+    // im using bfs for the node tree, nodes by layers
     
   }
 }
+
+const array = [9, 8, 7, 6, 6, 5, 4, 3, 2, 1];
+
+const tree = new Tree(array);
