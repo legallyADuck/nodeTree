@@ -3,6 +3,19 @@ import { greeting } from "./greeting.js";
 
 console.log(greeting);
 
-export function sum(a, b) {
-  return a + b;
+class Node {
+  constructor(left, right) {
+    this.left = left;
+    this.right = right;
+  }
+}
+
+class Tree {
+  constructor() {
+    this.root;
+  }
+
+  buildTree(array) {
+    
+  }
 }
