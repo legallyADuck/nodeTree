@@ -15,18 +15,27 @@ class Tree {
   constructor(array = []) {
     // default is []
     if (array instanceof Array) this.array = array; // strings or numbers are not allowed
-    this.root = new Node("example");
+    this.root = new Node();
   }
 
-  static build(array, obj) {
+  static build(array, node, i = 0) {
+    node.value = array[i];
+    if (!node.value) return;
 
-    obj.l = new Node(array[0]);
-
+    if (array[i + 1] > node.value) {
+      node.r = new Node(array[i + 1]);
+      i++;
+      this.build(array, node.r, i);
+    } else if (array[i + 1] < node.value) {
+      node.l = new Node(array[i + 1]);
+      i++;
+      this.build(array, node.l, i);
+    }
   }
 
   buildTree(array = this.array) {
     array = array.sort().filter((num, index) => num !== array[index + 1]);
-    Tree.build(array, this.root)
+    Tree.build(array, this.root);
   }
 
   // buildTree(array = this.array) {
