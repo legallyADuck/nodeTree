@@ -45,20 +45,20 @@ class Tree {
     })();
   }
 
-  inOrderForEach(callback) {
-    (function recursive(node) {
-      if (!node) return;
-      recursive(node.l);
-      callback(node.value);
-      recursive(node.r);
-    })(this.root);
-  }
-
   preOrderForEach(callback) {
     (function recursive(node) {
       if (!node) return;
       callback(node.value);
       recursive(node.l);
+      recursive(node.r);
+    })(this.root);
+  }
+
+  inOrderForEach(callback) {
+    (function recursive(node) {
+      if (!node) return;
+      recursive(node.l);
+      callback(node.value);
       recursive(node.r);
     })(this.root);
   }
@@ -69,13 +69,7 @@ class Tree {
       recursive(node.l);
       recursive(node.r);
       callback(node.value);
-      // if (!node.l && !node.r) return node.value;
-      // if (node.l) callback(recursive(node.l));
-      // if (node.r) callback(recursive(node.r));
-      // return node.value;
     })(this.root);
-
-    callback(this.root.value); // hehe, a little trick
   }
 
   sort(array) {
