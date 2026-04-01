@@ -39,17 +39,49 @@ class Tree {
 
       if (node.l) nodesQueue.push(node.l);
       if (node.r) nodesQueue.push(node.r);
-      nodesQueue.shift() // remove parent from queue
+      nodesQueue.shift(); // remove parent from queue
 
-      recursive()
+      recursive();
     })();
+  }
+
+  inOrderForEach(callback) {
+    (function recursive(node) {
+      if (!node) return;
+      recursive(node.l);
+      callback(node.value);
+      recursive(node.r);
+    })(this.root);
+  }
+
+  preOrderForEach(callback) {
+    (function recursive(node) {
+      if (!node) return;
+      callback(node.value);
+      recursive(node.l);
+      recursive(node.r);
+    })(this.root);
+  }
+
+  postOrderForEach(callback) {
+    (function recursive(node) {
+      if (!node) return;
+      recursive(node.l);
+      recursive(node.r);
+      callback(node.value);
+      // if (!node.l && !node.r) return node.value;
+      // if (node.l) callback(recursive(node.l));
+      // if (node.r) callback(recursive(node.r));
+      // return node.value;
+    })(this.root);
+
+    callback(this.root.value); // hehe, a little trick
   }
 
   sort(array) {
     const sortedArray = array
       .sort()
       .filter((num, index) => num !== array[index + 1]);
-
     this.array = sortedArray;
     return sortedArray;
   }
@@ -120,6 +152,23 @@ tree.insert(4.5);
 tree.remove(4.5);
 prettyPrint(tree.root);
 
+console.log("levelOrder! \n");
+
 tree.levelOrderForEach((value) => {
+  console.log(value);
+});
+
+console.log("preorder! \n");
+tree.preOrderForEach((value) => {
+  console.log(value);
+});
+
+console.log("postorder! \n");
+tree.postOrderForEach((value) => {
+  console.log(value);
+});
+
+console.log("inorder! \n");
+tree.inOrderForEach((value) => {
   console.log(value);
 });
