@@ -45,6 +45,43 @@ class Tree {
     })();
   }
 
+  #findNode(value, node) {
+    if (!node) return;
+    if (value === node.value) return node;
+    return value > node.value
+      ? this.#findNode(node.r, value)
+      : this.#findNode(node.l, value);
+  }
+
+  #getHeight(node, i = 0) {
+    if (!node) return i - 1;
+    const leftHeight = this.#getHeight(node.l, i + 1);
+    const rightHeight = this.#getHeight(node.r, i + 1);
+    return leftHeight > rightHeight ? leftHeight : rightHeight;
+  }
+
+  #checkIfBalanced(node) {
+    if (!node) return -1;
+    let lh = this.#checkIfBalanced(node.l);
+    let rh = this.#checkIfBalanced(node.r);
+    if (lh === false || rh === false) return false; // exit the function if its non-balanced
+    // add one each time we move up the tree
+    lh++;
+    rh++;
+    if (Math.abs(lh - rh) > 1) return false;
+    return lh > rh ? lh : rh; // return the greater height
+  }
+
+  balanced() {
+    return this.#checkIfBalanced(this.root) != false;
+  }
+
+  reBalance() {
+    this.array.length = 0;
+    this.inOrderForEach((value) => this.array.push(value));
+    this.buildTree();
+  }
+
   preOrderForEach(callback) {
     (function recursive(node) {
       if (!node) return;
@@ -69,6 +106,21 @@ class Tree {
       recursive(node.l);
       recursive(node.r);
       callback(node.value);
+    })(this.root);
+  }
+
+  heigth(value) {
+    const node = this.#findNode(value, this.root);
+    return this.#getHeight(node);
+  }
+
+  depth(value) {
+    return (function recursive(node, i = 1) {
+      if (node.value === value) return i;
+      if (!node) return;
+      return node.value > value
+        ? recursive(node.l, i + 1)
+        : recursive(node.r, i + 1);
     })(this.root);
   }
 
@@ -124,7 +176,9 @@ class Tree {
   }
 }
 
-const array = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+// testing!
+
+const array = [1, 2, 3, 4, 5];
 
 const tree = new Tree(array);
 
@@ -166,3 +220,25 @@ console.log("inorder! \n");
 tree.inOrderForEach((value) => {
   console.log(value);
 });
+
+console.log(tree.depth(5));
+
+console.log(`height is: ${tree.heigth(4)}`);
+
+tree.insert(10);
+
+tree.insert(11);
+
+tree.insert(12);
+
+tree.insert(13);
+
+prettyPrint(tree.root);
+
+console.log(tree.balanced());
+
+prettyPrint(tree.root);
+
+tree.reBalance();
+
+prettyPrint(tree.root);
